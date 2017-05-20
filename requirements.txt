@@ -5,3 +5,4 @@ peewee==2.8.0
 slacker==0.9.10
 rollbar==0.13.2
 blinker==1.4
+psycopg2==2.7.1

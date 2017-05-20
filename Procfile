@@ -1,0 +1,1 @@
+web: gunicorn --log-level debug --workers 4 teabot_endpoints.endpoints:app

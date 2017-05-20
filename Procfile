@@ -1,2 +1,2 @@
-#web: ./run
-web: python teabot_endpoints/endpoints.py
+web: ./run
+#web: python teabot_endpoints/endpoints.py

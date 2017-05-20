@@ -256,14 +256,12 @@ def getNumberOfTeapotRequests():
         {'teaRequests': number of tea requests}
 
     """
-    print "mumble mumble"
     tea_requests = PotMaker.get_number_of_teapot_requests() + \
         slack_communicator_wrapper.get_message_reaction_count()
 
     return jsonify({'teaRequests': tea_requests})
 
-print "imported"
+
 if __name__ == "__main__":
-    print "grumble grumble"
     port = int(os.environ.get("PORT", "8000"))
-    app.run(host="0.0.0.0", debug=True, port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)

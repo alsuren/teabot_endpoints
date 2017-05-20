@@ -184,11 +184,11 @@ class SlackMessages(BaseModel):
 
 if __name__ == "__main__":
     try:
-        State.create_table()
+        PotMaker.create_table()
     except OperationalError:
         print "The table already exists"
     try:
-        PotMaker.create_table()
+        State.create_table()
     except OperationalError:
         print "The table already exists"
     try:

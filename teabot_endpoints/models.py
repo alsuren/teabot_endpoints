@@ -7,7 +7,12 @@ from datetime import datetime
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 if DATABASE_URL.startswith("postgres"):
-    db = PostgresqlDatabase(DATABASE_URL)
+    import urlparse
+    urlparse.uses_netloc.append('postgres')
+    url = urlparse.urlparse(os.environ["DATABASE_URL"])
+    db = PostgresqlDatabase(
+        database=url.path[1:], user=url.username, password=url.password,
+        host=url.hostname, port=url.port)
 else:
     db = SqliteExtDatabase('teapot.db')
 

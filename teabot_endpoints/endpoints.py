@@ -265,4 +265,5 @@ def getNumberOfTeapotRequests():
 print "imported"
 if __name__ == "__main__":
     print "grumble grumble"
-    app.run(host="127.0.0.1", debug=True)
+    port = int(os.environ.get("PORT", "8000"))
+    app.run(host="127.0.0.1", debug=True, port=port)

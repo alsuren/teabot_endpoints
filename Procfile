@@ -1,1 +1,2 @@
-web: gunicorn --log-level debug --workers 4 teabot_endpoints.endpoints:app
+#web: ./run
+web: python teabot_endpoints/endpoints.py

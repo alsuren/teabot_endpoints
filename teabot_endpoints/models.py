@@ -1,9 +1,15 @@
+import os
+
 from peewee import Model, DateTimeField, OperationalError, CharField, \
-    IntegerField, ForeignKeyField, BooleanField
+    IntegerField, ForeignKeyField, BooleanField, PostgresqlDatabase
 from playhouse.sqlite_ext import SqliteExtDatabase
 from datetime import datetime
 
-db = SqliteExtDatabase('teapot.db')
+DATABASE_URL = os.environ.get("DATABASE_URL", "")
+if DATABASE_URL.startswith("postgres"):
+    db = PostgresqlDatabase(DATABASE_URL)
+else:
+    db = SqliteExtDatabase('teapot.db')
 
 
 class BaseModel(Model):

@@ -1,0 +1,29 @@
+{
+  "//": "This config just proxies onto teabot_stats/package.json.",
+  "name": "teabot_stats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "postinstall": "cd teabot_stats && npm install",
+    "test": "cd teabot_stats && npm run test",
+    "lint": "cd teabot_stats && npm run lint",
+    "build": "cd teabot_stats && npm run build",
+    "watch": "cd teabot_stats && npm run watch",
+    "heroku-postbuild": "cd teabot_stats && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AaronKalair/teabot_stats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AaronKalair/teabot_stats/issues"
+  },
+  "homepage": "https://github.com/AaronKalair/teabot_stats#readme"
+}

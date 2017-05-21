@@ -1,0 +1,3 @@
+[submodule "teabot_stats"]
+	path = teabot_stats
+	url = https://github.com/alsuren/teabot_stats.git

@@ -1,11 +1,15 @@
+import os
+import json
+from datetime import datetime
+import urlparse
+
 from flask import Flask, Response, jsonify, request, got_request_exception
 import rollbar
 import rollbar.contrib.flask
-import os
+from pusher import Pusher
 from slack_communicator import SlackCommunicator
+
 from models import State, PotMaker, SlackMessages
-import json
-from datetime import datetime
 
 
 app = Flask(__name__)
@@ -67,6 +71,7 @@ def teaReady():
     PotMaker.reset_teapot_requests()
     SlackMessages.clear_slack_message()
     slack_communicator_wrapper.post_message_to_room(reaction_message, True)
+    _push_refresh_to_dashboard()
     return Response()
 
 
@@ -89,6 +94,7 @@ def storeState():
         weight=data.get("weight", -1),
         temperature=data.get("temperature", 1)
     )
+    _push_refresh_to_dashboard()
     return Response()
 
 
@@ -224,6 +230,7 @@ def claimPot():
     maker.save()
     latest_full_pot.claimed_by = maker
     latest_full_pot.save()
+    _push_refresh_to_dashboard()
     return jsonify({'submitMessage': 'Pot claimed, thanks, %s' % maker.name})
 
 
@@ -260,6 +267,34 @@ def getNumberOfTeapotRequests():
         slack_communicator_wrapper.get_message_reaction_count()
 
     return jsonify({'teaRequests': tea_requests})
+
+
+def _push_refresh_to_dashboard():
+    pusher = _get_pusher()
+    if not pusher:
+        print "no pusher"
+        return
+
+    pusher.trigger('dashboard', 'refresh', {})
+
+
+def _get_pusher():
+    url = os.environ.get("PUSHER_URL", "")
+    if not url:
+        return None
+    parsed = urlparse.urlparse(url)
+    return Pusher(
+        app_id=parsed.path.split("/")[-1],
+        key=parsed.username,
+        secret=parsed.password,
+        cluster=parsed.netloc.split('api-')[-1].split('.pusher.com')[0])
+
+
+@app.route("/getPusherAppKey", methods=['GET'])
+def getPusherAppKey():
+    """Get pusher app key from environment."""
+    key = os.environ.get("PUSHER_SOCKET_URL", "").split("/")[-1]
+    return jsonify({'pusherAppKey': key})
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='teabot_stats')
 slack_communicator_wrapper = SlackCommunicator()
 
 

@@ -32,7 +32,7 @@ class TestEndpoints(TestCase):
     def test_tea_ready_no_claim(self, mock_slack):
         State.create(
             state="FULL_TEAPOT",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=3
         )
         result = self.app.post("/teaReady")
@@ -61,7 +61,7 @@ class TestEndpoints(TestCase):
         )
         State.create(
             state="FULL_TEAPOT",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=3,
             claimed_by=maker
         )
@@ -87,12 +87,12 @@ class TestEndpoints(TestCase):
     def test_tea_webhook_data(self):
         State.create(
             state="TEAPOT FULL",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=3
         )
         State.create(
             state="TEAPOT EMPTY",
-            timestamp=datetime.now() - timedelta(weeks=1),
+            timestamp=datetime.utcnow() - timedelta(weeks=1),
             num_of_cups=2
         )
         result = self.app.post("/teabotWebhook")
@@ -103,12 +103,12 @@ class TestEndpoints(TestCase):
     def test_tea_webhook_data_cold_tea(self):
         State.create(
             state="COLD_TEAPOT",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=3
         )
         State.create(
             state="TEAPOT EMPTY",
-            timestamp=datetime.now() - timedelta(weeks=1),
+            timestamp=datetime.utcnow() - timedelta(weeks=1),
             num_of_cups=2
         )
         result = self.app.post("/teabotWebhook")
@@ -120,7 +120,7 @@ class TestEndpoints(TestCase):
     def test_store_state(self):
         database_entries = [d for d in State.select()]
         self.assertEqual(len(database_entries), 0)
-        now = datetime.now()
+        now = datetime.utcnow()
         result = self.app.post(
             "/storeState",
             data=json.dumps({
@@ -149,7 +149,7 @@ class TestEndpoints(TestCase):
     def test_human_teapot_state_cold_tea(self):
         state = State.create(
             state="COLD_TEAPOT",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=3
         )
         result = _human_teapot_state(state)
@@ -158,7 +158,7 @@ class TestEndpoints(TestCase):
     def test_human_teapot_state_cold_tea_one_cup(self):
         state = State.create(
             state="COLD_TEAPOT",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=1
         )
         result = _human_teapot_state(state)
@@ -167,7 +167,7 @@ class TestEndpoints(TestCase):
     def test_human_teapot_state_good_tea_1_cup(self):
         state = State.create(
             state="TEAPOT_FULL",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=1
         )
         result = _human_teapot_state(state)
@@ -176,7 +176,7 @@ class TestEndpoints(TestCase):
     def test_human_teapot_state_good_tea_many_cups(self):
         state = State.create(
             state="TEAPOT_FULL",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=2
         )
         result = _human_teapot_state(state)

@@ -154,7 +154,7 @@ def numberOfNewTeapots():
 
 
 def _get_current_time():
-    return datetime.now()
+    return datetime.utcnow()
 
 
 @app.route("/teapotAge")

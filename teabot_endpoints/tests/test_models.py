@@ -20,12 +20,12 @@ class TestModels(TestCase):
     def test_get_latest_state(self):
         State.create(
             state="TEAPOT_FULL",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=3
         )
         State.create(
             state="TEAPOT_EMPTY",
-            timestamp=datetime.now() - timedelta(weeks=1),
+            timestamp=datetime.utcnow() - timedelta(weeks=1),
             num_of_cups=0
         )
         result = State.get_newest_state()
@@ -35,17 +35,17 @@ class TestModels(TestCase):
     def test_get_number_of_new_teapots(self):
         State.create(
             state="FULL_TEAPOT",
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.utcnow().isoformat(),
             num_of_cups=3
         )
         State.create(
             state="FULL_TEAPOT",
-            timestamp=datetime.now() - timedelta(weeks=1),
+            timestamp=datetime.utcnow() - timedelta(weeks=1),
             num_of_cups=0
         )
         State.create(
             state="EMPTY_TEAPOT",
-            timestamp=datetime.now() - timedelta(weeks=1),
+            timestamp=datetime.utcnow() - timedelta(weeks=1),
             num_of_cups=0
         )
         result = State.get_number_of_new_teapots()

@@ -116,7 +116,7 @@ class State(BaseModel):
     for the latest entry to tell people about the state of the teapot
     """
     state = CharField()
-    timestamp = DateTimeField(default=datetime.now, index=True)
+    timestamp = DateTimeField(default=datetime.utcnow, index=True)
     num_of_cups = IntegerField()
     weight = IntegerField(null=True)
     temperature = IntegerField(null=True)
